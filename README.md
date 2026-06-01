@@ -292,5 +292,13 @@ ffuf -u http://IP:PORT/post.php \
 -w /usr/share/seclists/Discovery/Web-Content/common.txt \
 -mc 200 \
 -v
-
 ```
+**Virtual Host Fuzzig with GoBuster**
+`echo "IP inlanefreight.htb" | sudo tee -a /etc/hosts` # add the IP address in hosts file with domain name
+`gobuster vhost -u http://inlanefreight.htb:81 -w /usr/share/seclists/Discovery/Web-Content/common.txt --append-domain` # fuzz the vhosts using this command
+
+
+
+
+
+
