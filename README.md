@@ -1,1 +1,101 @@
+# HTB CWES (Notes/CheatSheet)
+**Notes (Things to keep in mind)**
+
+1. Run ReconSpider by thb to get the Inforand email adds https://academy.hackthebox.com/storage/modules/144/ReconSpider.v1.2.zip
+2. run vhost fuzzing & subdomain bruteforcing dnsenum --enum inlanefreight.com -f  /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt (do multile times both)
+3. Directory fuzzing on all the found vhosts & also run the reconspider by htb 
+4. 
+
+**HTTPs communication and certification handling details**
+
+1. User visits `http://yash.com`
+2. Server redirects to HTTPS (`301`)
+3. Browser connects to `https://yash.com`
+4. Server sends certificate + public key
+5. Browser verifies the certificate
+6. Browser creates a random secret key
+7. Browser encrypts it with the server’s public key and sends it
+8. Server decrypts it using its private key
+9. Both now have the same secret
+10. Both generate the same session key
+11. Session key is used to encrypt all HTTPS communication like passwords, cookies, and auth tokens.
+
+### Client Side Vulnerabilites
+1. view source code (look for the creds, api keys or any sensitive data spend time)
+2. HTML Injection/XSS (if we have observed that no input validation)
+3. CSRF (check what application is using for authentication/authorization, If cookies then check the samesite attribute or anti CSRF toekn)
+
+**Back End Servers**
+
+```jsx
+LAMP	Linux, Apache, MySQL, and PHP.
+WAMP	Windows, Apache, MySQL, and PHP.
+WINS	Windows, IIS, .NET, and SQL Server
+MAMP	macOS, Apache, MySQL, and PHP.
+XAMPP	Cross-Platform, Apache, MySQL, and PHP/PERL.
+```
+**Zone Transfer Check**
+dig domain.com NS # for getting the name server then run the following command
+dig axfr @nameserver Domain.com
+
+**VHosts Fuzzing** 
+`gobuster vhost -u http://inlanefreight.htb:81 -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --append-domain --domain DOMAIN-HERE` 
+
+CRT.sh `curl -s "https://crt.sh/?q=facebook.com&output=json" | jq -r '.[] | select(.name_value | contains("dev")) | .name_value' | sort -u #`  
+
+**Well-KNown URLs**
+
+```jsx
+Put /.well-known/ directory befor ethe follwoing files
+
+/security.txt
+mta-sts.txt
+assetlinks.json
+openid-configuration
+/.well-known/change-password
+```
+**Spirder Tool**
+**Reconspider.py** by htb then view results.json # which has a juicy info including emails and comments 
+
+### Google dorking | https://www.exploit-db.com/google-hacking-database
+
+- Finding Login Pages:
+    - `site:example.com inurl:login`
+    - `site:example.com (inurl:login OR inurl:admin)`
+- Identifying Exposed Files:
+    - `site:example.com filetype:pdf`
+    - `site:example.com (filetype:xls OR filetype:docx)`
+- Uncovering Configuration Files:
+    - `site:example.com inurl:config.php`
+    - `site:example.com (ext:conf OR ext:cnf)` (searches for extensions commonly used for configuration files)
+- Locating Database Backups:
+    - `site:example.com inurl:backup`
+    - `site:example.com filetype:sql`
+
+Final Recon for automating the recon part 
+
+`ffuf -u http://inlanefreight.htb:30494 -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -mc 200,403 -t 60 -H "Host: FUZZ.inlanefreight.htb" -ac`
+
+**Domain BrutForcing**
+`dnsenum --enum inlanefreight.com -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -r`
+
+**Web fuzzing**
+Tools: gobuster, feroxbuster, wenum/wfuzz, fuff
+
+**Wordlist By HTB**
+- `Discovery/Web-Content/common.txt`: This general-purpose wordlist contains a broad range of common directory and file names on web servers. It's an excellent starting point for fuzzing and often yields valuable results.
+- `Discovery/Web-Content/directory-list-2.3-medium.txt`: This is a more extensive wordlist specifically focused on directory names. It's a good choice when you need a deeper dive into potential directories.
+- `Discovery/Web-Content/raft-large-directories.txt`: This wordlist boasts a massive collection of directory names compiled from various sources. It's a valuable resource for thorough fuzzing campaigns.
+- `Discovery/Web-Content/big.txt`: As the name suggests, this is a massive wordlist containing both directory and file names. It's useful when you want to cast a wide net and explore all possibilities.
+
+`ffuf -u https://target.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -e .php,.asp,.aspx,.jsp,.js,.txt,.html,.bak,.zip,.tar.gz,.old,.conf,.config,.json,.xml -recursion -recursion-depth 2 -ac -c -t 100 -timeout 10 -x http://127.0.0.1:8080 -mc 200,201,202,204,301,302,307,308,401,405,500 -fc 400,403`
+
+-ic flag check for ffuf 
+
+`feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://94.237.55.43:40444/recursive_fuzz -x .php,.html -t 200 -C 400,404,401`
+
+### Parameter fuzzing with CMD Tools
+`wenum -w /usr/share/seclists/Discovery/Web-Content/common.txt --hc 404 -u "http://IP:PORT/get.php?x=FUZZ"` # Fuzzing the parameter value with wenum/wfuzz
+`ffuf -u http://IP:PORT/post.php -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "y=FUZZ" -w /usr/share/seclists/Discovery/Web-Content/common.txt -mc 200 -v` # this is an example I've got from that section.
+
 
