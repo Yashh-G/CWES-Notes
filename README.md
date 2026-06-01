@@ -293,12 +293,12 @@ ffuf -u http://IP:PORT/post.php \
 -mc 200 \
 -v
 ```
-####Virtual Host Fuzzig with GoBuster
+#### Virtual Host Fuzzig with GoBuster
 `echo "IP inlanefreight.htb" | sudo tee -a /etc/hosts` # add the IP address in hosts file with domain name
 
 `gobuster vhost -u http://inlanefreight.htb:81 -w /usr/share/seclists/Discovery/Web-Content/common.txt --append-domain` # fuzz the vhosts using this command
 
-####GoBuster Subdomain Fuzzing
+#### GoBuster Subdomain Fuzzing
 `gobuster dns -d inlanefreight.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt` # subdomain fuzzing using gobuster command
 
 
