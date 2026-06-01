@@ -1,2 +1,4 @@
 
+### Parameter fuzzing with CMD Tools
 wenum -w /usr/share/seclists/Discovery/Web-Content/common.txt --hc 404 -u "http://IP:PORT/get.php?x=FUZZ" # Fuzzing the parameter value with wenum/wfuzz
+ffuf -u http://IP:PORT/post.php -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "y=FUZZ" -w /usr/share/seclists/Discovery/Web-Content/common.txt -mc 200 -v # this is an example I've got from that section.
