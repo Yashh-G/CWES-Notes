@@ -292,6 +292,5 @@ ffuf -u http://IP:PORT/post.php \
 -w /usr/share/seclists/Discovery/Web-Content/common.txt \
 -mc 200 \
 -v
-```
 
-Example from the HTB module demonstrating POST parameter fuzzing.
+```
