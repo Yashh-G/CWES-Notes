@@ -1,1 +1,2 @@
 
+wenum -w /usr/share/seclists/Discovery/Web-Content/common.txt --hc 404 -u "http://IP:PORT/get.php?x=FUZZ" # Fuzzing the parameter value with wenum/wfuzz
