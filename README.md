@@ -262,7 +262,7 @@ Use `-ic` to ignore comments.
 feroxbuster \
 -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt \
 -u http://94.237.55.43:40444/recursive_fuzz \
--x .php,.html \
+-x .php,.asp,.aspx,.jsp,.js,.txt,.html,.bak,.zip,.tar.gz,.old,.conf,.config,.json,.xml \
 -t 200 \
 -C 400,404,401
 ```
