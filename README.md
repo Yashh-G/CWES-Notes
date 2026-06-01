@@ -335,4 +335,12 @@ Use filters to reduce noise and focus on interesting results.
 
 > Common workflow: Filter `404s`, then refine by `size`, `words`, `lines`, or `regex` to find unique responses.
 
+**curl command with parameter will get the result with this** 
+`curl -X POST "http://IP:PORT/post.php" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "y=SUNWmc" \
+  -v`
+
+
+
 
