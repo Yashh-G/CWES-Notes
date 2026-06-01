@@ -305,26 +305,26 @@ ffuf -u http://IP:PORT/post.php \
 
 Use filters to reduce noise and focus on interesting results.
 
-### Gobuster
+**Gobuster**
 - `-s` → Show status codes
 - `-b` → Hide status codes
 - `--exclude-length` → Hide responses by size
 
-### FFUF
+**FFUF**
 - `-mc` / `-fc` → Match / Filter status codes
 - `-ms` / `-fs` → Match / Filter response size
 - `-mw` / `-fw` → Match / Filter word count
 - `-ml` / `-fl` → Match / Filter line count
 - `-mt` → Match response time (TTFB)
 
-### Wenum
+**Wenum**
 - `--sc` / `--hc` → Show / Hide status codes
 - `--ss` / `--hs` → Show / Hide size
 - `--sw` / `--hw` → Show / Hide word count
 - `--sl` / `--hl` → Show / Hide line count
 - `--sr` / `--hr` → Show / Hide regex matches
 
-### Feroxbuster
+**Feroxbuster**
 - `-s` / `-C` → Include / Exclude status codes
 - `-S` → Filter size
 - `-W` → Filter words
