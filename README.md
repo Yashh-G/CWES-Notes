@@ -301,6 +301,38 @@ ffuf -u http://IP:PORT/post.php \
 #### GoBuster Subdomain Fuzzing
 `gobuster dns -d inlanefreight.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt` # subdomain fuzzing using gobuster command
 
+#### Filtering Fuzzing Output
 
+Use filters to reduce noise and focus on interesting results.
+
+### Gobuster
+- `-s` → Show status codes
+- `-b` → Hide status codes
+- `--exclude-length` → Hide responses by size
+
+### FFUF
+- `-mc` / `-fc` → Match / Filter status codes
+- `-ms` / `-fs` → Match / Filter response size
+- `-mw` / `-fw` → Match / Filter word count
+- `-ml` / `-fl` → Match / Filter line count
+- `-mt` → Match response time (TTFB)
+
+### Wenum
+- `--sc` / `--hc` → Show / Hide status codes
+- `--ss` / `--hs` → Show / Hide size
+- `--sw` / `--hw` → Show / Hide word count
+- `--sl` / `--hl` → Show / Hide line count
+- `--sr` / `--hr` → Show / Hide regex matches
+
+### Feroxbuster
+- `-s` / `-C` → Include / Exclude status codes
+- `-S` → Filter size
+- `-W` → Filter words
+- `-N` → Filter lines
+- `-X` → Filter regex
+- `--dont-scan` → Skip paths
+- `--filter-similar-to` → Remove similar responses
+
+> Common workflow: Filter `404s`, then refine by `size`, `words`, `lines`, or `regex` to find unique responses.
 
 
