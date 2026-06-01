@@ -1,101 +1,297 @@
-# HTB CWES (Notes/CheatSheet)
-**Notes (Things to keep in mind)**
+# HTB CWES (Notes/Cheat Sheet)
 
-1. Run ReconSpider by thb to get the Inforand email adds https://academy.hackthebox.com/storage/modules/144/ReconSpider.v1.2.zip
-2. run vhost fuzzing & subdomain bruteforcing dnsenum --enum inlanefreight.com -f  /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt (do multile times both)
-3. Directory fuzzing on all the found vhosts & also run the reconspider by htb 
-4. 
+## Notes (Things to Keep in Mind)
 
-**HTTPs communication and certification handling details**
+1. Run **ReconSpider** by HTB to gather information and email addresses:
+
+   * https://academy.hackthebox.com/storage/modules/144/ReconSpider.v1.2.zip
+2. Run **VHost fuzzing** and **subdomain brute-forcing**:
+
+   ```bash
+   dnsenum --enum inlanefreight.com -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt
+   ```
+
+   Perform both multiple times.
+3. Run **directory fuzzing** on all discovered VHosts and execute **ReconSpider** again.
+4. Continue expanding reconnaissance based on newly discovered assets.
+
+---
+
+## HTTPS Communication and Certificate Handling
 
 1. User visits `http://yash.com`
 2. Server redirects to HTTPS (`301`)
 3. Browser connects to `https://yash.com`
-4. Server sends certificate + public key
+4. Server sends its certificate and public key
 5. Browser verifies the certificate
 6. Browser creates a random secret key
-7. Browser encrypts it with the server’s public key and sends it
+7. Browser encrypts the secret key using the server's public key and sends it
 8. Server decrypts it using its private key
-9. Both now have the same secret
+9. Both now share the same secret
 10. Both generate the same session key
-11. Session key is used to encrypt all HTTPS communication like passwords, cookies, and auth tokens.
+11. The session key is used to encrypt all HTTPS communication, including passwords, cookies, and authentication tokens
 
-### Client Side Vulnerabilites
-1. view source code (look for the creds, api keys or any sensitive data spend time)
-2. HTML Injection/XSS (if we have observed that no input validation)
-3. CSRF (check what application is using for authentication/authorization, If cookies then check the samesite attribute or anti CSRF toekn)
+---
 
-**Back End Servers**
+## Client-Side Vulnerabilities
 
-```jsx
-LAMP	Linux, Apache, MySQL, and PHP.
-WAMP	Windows, Apache, MySQL, and PHP.
-WINS	Windows, IIS, .NET, and SQL Server
-MAMP	macOS, Apache, MySQL, and PHP.
-XAMPP	Cross-Platform, Apache, MySQL, and PHP/PERL.
+1. **View Source Code**
+
+   * Look for credentials, API keys, comments, or any sensitive information.
+   * Spend time thoroughly reviewing the source.
+
+2. **HTML Injection / XSS**
+
+   * Test for input validation weaknesses.
+   * Check whether user input is reflected or stored without proper sanitization.
+
+3. **CSRF**
+
+   * Identify the authentication and authorization mechanisms used by the application.
+   * If cookies are used, check the `SameSite` attribute.
+   * Verify whether anti-CSRF tokens are implemented.
+
+---
+
+## Back-End Server Stacks
+
+```text
+LAMP   Linux, Apache, MySQL, and PHP
+WAMP   Windows, Apache, MySQL, and PHP
+WINS   Windows, IIS, .NET, and SQL Server
+MAMP   macOS, Apache, MySQL, and PHP
+XAMPP  Cross-Platform, Apache, MySQL, and PHP/PERL
 ```
-**Zone Transfer Check**
-dig domain.com NS # for getting the name server then run the following command
-dig axfr @nameserver Domain.com
 
-**VHosts Fuzzing** 
-`gobuster vhost -u http://inlanefreight.htb:81 -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --append-domain --domain DOMAIN-HERE` 
+---
 
-CRT.sh `curl -s "https://crt.sh/?q=facebook.com&output=json" | jq -r '.[] | select(.name_value | contains("dev")) | .name_value' | sort -u #`  
+## Zone Transfer Check
 
-**Well-KNown URLs**
+```bash
+# Get the name servers
+dig domain.com NS
 
-```jsx
-Put /.well-known/ directory befor ethe follwoing files
+# Attempt a zone transfer
+dig axfr @nameserver domain.com
+```
 
-/security.txt
-mta-sts.txt
-assetlinks.json
-openid-configuration
+---
+
+## VHost Fuzzing
+
+```bash
+gobuster vhost -u http://inlanefreight.htb:81 \
+-w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt \
+--append-domain \
+--domain DOMAIN-HERE
+```
+
+---
+
+## crt.sh Enumeration
+
+```bash
+curl -s "https://crt.sh/?q=facebook.com&output=json" | \
+jq -r '.[] | select(.name_value | contains("dev")) | .name_value' | \
+sort -u
+```
+
+---
+
+## Well-Known URLs
+
+Check the following files under the `/.well-known/` directory:
+
+```text
+/.well-known/security.txt
+/.well-known/mta-sts.txt
+/.well-known/assetlinks.json
+/.well-known/openid-configuration
 /.well-known/change-password
 ```
-**Spirder Tool**
-**Reconspider.py** by htb then view results.json # which has a juicy info including emails and comments 
 
-### Google dorking | https://www.exploit-db.com/google-hacking-database
+---
 
-- Finding Login Pages:
-    - `site:example.com inurl:login`
-    - `site:example.com (inurl:login OR inurl:admin)`
-- Identifying Exposed Files:
-    - `site:example.com filetype:pdf`
-    - `site:example.com (filetype:xls OR filetype:docx)`
-- Uncovering Configuration Files:
-    - `site:example.com inurl:config.php`
-    - `site:example.com (ext:conf OR ext:cnf)` (searches for extensions commonly used for configuration files)
-- Locating Database Backups:
-    - `site:example.com inurl:backup`
-    - `site:example.com filetype:sql`
+## Spider Tool
 
-Final Recon for automating the recon part 
+**ReconSpider.py** by HTB
 
-`ffuf -u http://inlanefreight.htb:30494 -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -mc 200,403 -t 60 -H "Host: FUZZ.inlanefreight.htb" -ac`
+Review `results.json`, which may contain useful information such as:
 
-**Domain BrutForcing**
-`dnsenum --enum inlanefreight.com -f /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -r`
+* Email addresses
+* Comments
+* Internal links
+* Metadata
 
-**Web fuzzing**
-Tools: gobuster, feroxbuster, wenum/wfuzz, fuff
+---
 
-**Wordlist By HTB**
-- `Discovery/Web-Content/common.txt`: This general-purpose wordlist contains a broad range of common directory and file names on web servers. It's an excellent starting point for fuzzing and often yields valuable results.
-- `Discovery/Web-Content/directory-list-2.3-medium.txt`: This is a more extensive wordlist specifically focused on directory names. It's a good choice when you need a deeper dive into potential directories.
-- `Discovery/Web-Content/raft-large-directories.txt`: This wordlist boasts a massive collection of directory names compiled from various sources. It's a valuable resource for thorough fuzzing campaigns.
-- `Discovery/Web-Content/big.txt`: As the name suggests, this is a massive wordlist containing both directory and file names. It's useful when you want to cast a wide net and explore all possibilities.
+## Google Dorking
 
-`ffuf -u https://target.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -e .php,.asp,.aspx,.jsp,.js,.txt,.html,.bak,.zip,.tar.gz,.old,.conf,.config,.json,.xml -recursion -recursion-depth 2 -ac -c -t 100 -timeout 10 -x http://127.0.0.1:8080 -mc 200,201,202,204,301,302,307,308,401,405,500 -fc 400,403`
+Reference:
+https://www.exploit-db.com/google-hacking-database
 
--ic flag check for ffuf 
+### Finding Login Pages
 
-`feroxbuster -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://94.237.55.43:40444/recursive_fuzz -x .php,.html -t 200 -C 400,404,401`
+```text
+site:example.com inurl:login
+site:example.com (inurl:login OR inurl:admin)
+```
 
-### Parameter fuzzing with CMD Tools
-`wenum -w /usr/share/seclists/Discovery/Web-Content/common.txt --hc 404 -u "http://IP:PORT/get.php?x=FUZZ"` # Fuzzing the parameter value with wenum/wfuzz
-`ffuf -u http://IP:PORT/post.php -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "y=FUZZ" -w /usr/share/seclists/Discovery/Web-Content/common.txt -mc 200 -v` # this is an example I've got from that section.
+### Identifying Exposed Files
 
+```text
+site:example.com filetype:pdf
+site:example.com (filetype:xls OR filetype:docx)
+```
 
+### Uncovering Configuration Files
+
+```text
+site:example.com inurl:config.php
+site:example.com (ext:conf OR ext:cnf)
+```
+
+### Locating Database Backups
+
+```text
+site:example.com inurl:backup
+site:example.com filetype:sql
+```
+
+---
+
+## Final Recon (Automating Reconnaissance)
+
+```bash
+ffuf -u http://inlanefreight.htb:30494 \
+-w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt \
+-mc 200,403 \
+-t 60 \
+-H "Host: FUZZ.inlanefreight.htb" \
+-ac
+```
+
+---
+
+## Domain Brute-Forcing
+
+```bash
+dnsenum --enum inlanefreight.com \
+-f /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt \
+-r
+```
+
+---
+
+## Web Fuzzing
+
+### Tools
+
+* Gobuster
+* Feroxbuster
+* Wenum / Wfuzz
+* FFUF
+
+---
+
+## Recommended Wordlists (HTB)
+
+### Common Content Discovery
+
+```text
+Discovery/Web-Content/common.txt
+```
+
+A general-purpose wordlist containing common directory and file names. Excellent as a starting point.
+
+### Medium Directory Discovery
+
+```text
+Discovery/Web-Content/directory-list-2.3-medium.txt
+```
+
+A larger wordlist focused on discovering directories.
+
+### Large Directory Discovery
+
+```text
+Discovery/Web-Content/raft-large-directories.txt
+```
+
+A comprehensive directory wordlist compiled from multiple sources.
+
+### Comprehensive Discovery
+
+```text
+Discovery/Web-Content/big.txt
+```
+
+A massive wordlist containing both file and directory names.
+
+---
+
+## FFUF Recursive Directory Fuzzing
+
+```bash
+ffuf -u https://target.com/FUZZ \
+-w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt \
+-e .php,.asp,.aspx,.jsp,.js,.txt,.html,.bak,.zip,.tar.gz,.old,.conf,.config,.json,.xml \
+-recursion \
+-recursion-depth 2 \
+-ac -c \
+-t 100 \
+-timeout 10 \
+-x http://127.0.0.1:8080 \
+-mc 200,201,202,204,301,302,307,308,401,405,500 \
+-fc 400,403
+```
+
+### Useful FFUF Flag
+
+```text
+-ic
+```
+
+Use `-ic` to ignore comments.
+
+---
+
+## Feroxbuster Example
+
+```bash
+feroxbuster \
+-w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt \
+-u http://94.237.55.43:40444/recursive_fuzz \
+-x .php,.html \
+-t 200 \
+-C 400,404,401
+```
+
+---
+
+## Parameter Fuzzing with CLI Tools
+
+### GET Parameter Fuzzing
+
+```bash
+wenum \
+-w /usr/share/seclists/Discovery/Web-Content/common.txt \
+--hc 404 \
+-u "http://IP:PORT/get.php?x=FUZZ"
+```
+
+Fuzzes parameter values using Wenum/Wfuzz.
+
+### POST Parameter Fuzzing
+
+```bash
+ffuf -u http://IP:PORT/post.php \
+-X POST \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "y=FUZZ" \
+-w /usr/share/seclists/Discovery/Web-Content/common.txt \
+-mc 200 \
+-v
+```
+
+Example from the HTB module demonstrating POST parameter fuzzing.
