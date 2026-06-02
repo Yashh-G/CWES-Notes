@@ -15,6 +15,12 @@
 3. Run **directory fuzzing** on all discovered VHosts and execute **ReconSpider** again.
 4. Continue expanding reconnaissance based on newly discovered assets.
 5. Keep fuzzing till end (don't stop) sometimes we think we got it but it can be a rebbit hole.
+6. Fuzz all the things
+  - vhost fuzzing (Recursive if nothing has found)
+  - directory fuzzing (recursive)
+  - parameter fuzzing (Both GET and POST)
+  - parameter value fuzzing (Both GET and POST)
+  - If API endpoint found then, fuzz for more endpoints with webfuzz_api tool
 
 ---
 
