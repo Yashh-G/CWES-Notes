@@ -364,9 +364,9 @@ https://matthewfl.com/unPacker.html
 
 **Encoding and decoding HEX**
 
-`echo Yash | xxe -p` # For encoding the data into HEX
+`echo Yash | xxd -p` # For encoding the data into HEX
 
-`echo 59617368 | xxe -p -r` # For Decoding the HEX string
+`echo 59617368 | xxd -p -r` # For Decoding the HEX string
 
 **Caesar/Rot13 Encoding and Decoding**
 
