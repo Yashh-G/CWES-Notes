@@ -350,7 +350,17 @@ Use filters to reduce noise and focus on interesting results.
 `git clone https://github.com/PandaSt0rm/webfuzz_api.git ; cd webfuzz_api ; pip3 install -r requirements.txt` 
 `python3 api_fuzzer.py http://IP:PORT`
 
+### Javascript Deobfuscation
 
+> Following website can be used for deobfuscation
+https://matthewfl.com/unPacker.html 
 
+> Encoding and decoding Base64
+`echo Yash | base64` # this command can be used for encoding in base64
+`echo WWFzaA== | base64 -d ` # this command can be used for decoding base64 string
+
+> Encoding and decoding HEX
+`echo Yash | xxe -p` # For encoding the data into HEX
+`echo 59617368 | xxe -p -r` # For Decoding the HEX string
 
 
