@@ -266,12 +266,7 @@ Use `-ic` to ignore comments.
 ## Feroxbuster Example
 
 ```bash
-feroxbuster \
--w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt \
--u http://94.237.55.43:40444/recursive_fuzz \
--x .php,.asp,.aspx,.jsp,.js,.txt,.html,.bak,.zip,.tar.gz,.old,.conf,.config,.json,.xml \
--t 200 \
--C 400,404,401
+feroxbuster -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://94.237.55.43:40444/ -x .php,.asp,.aspx,.jsp,.js,.txt,.html,.bak,.zip,.tar.gz,.old,.conf,.config,.json,.xml -t 200 -C 400,404
 ```
 
 ---
