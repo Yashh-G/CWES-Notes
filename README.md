@@ -354,7 +354,9 @@ Use filters to reduce noise and focus on interesting results.
 
 Following website can be used for deobfuscation
 
-https://matthewfl.com/unPacker.html 
+https://matthewfl.com/unPacker.html # for Deobfuscation
+
+https://www.boxentriq.com/analysis/cipher-identifier # for identifying an encoding used by application
 
 **Encoding and decoding Base64**
 
