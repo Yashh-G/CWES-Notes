@@ -342,6 +342,14 @@ Use filters to reduce noise and focus on interesting results.
   --data "y=SUNWmc" \
   -v`
 
+**API Fuzzing**
+
+> Tool for fuzzing an API endpoints
+
+`git clone https://github.com/PandaSt0rm/webfuzz_api.git ; cd webfuzz_api ; pip3 install -r requirements.txt` 
+`python3 api_fuzzer.py http://IP:PORT`
+
+
 
 
 
