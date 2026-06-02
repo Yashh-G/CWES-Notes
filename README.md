@@ -368,4 +368,9 @@ https://matthewfl.com/unPacker.html
 
 `echo 59617368 | xxe -p -r` # For Decoding the HEX string
 
+**Caesar/Rot13 Encoding and Decoding**
+
+`echo https://www.hackthebox.eu/ | tr 'A-Za-z' 'N-ZA-Mn-za-m'` # For encoding
+
+`echo uggcf://jjj.unpxgurobk.rh/ | tr 'A-Za-z' 'N-ZA-Mn-za-m'` # For Decoding
 
