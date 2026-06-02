@@ -14,6 +14,7 @@
    Perform both multiple times.
 3. Run **directory fuzzing** on all discovered VHosts and execute **ReconSpider** again.
 4. Continue expanding reconnaissance based on newly discovered assets.
+5. Keep fuzzing till end (don't stop) sometimes we think we got it but it can be a rebbit hole.
 
 ---
 
