@@ -385,4 +385,6 @@ In a mobile application, the app may sometimes use a WebView to embed a web appl
 
 > we can determine where exactly our payload is being executed, helping us pinpoint the execution context or location. 
 
+`<script>print()</script>` # print() is not blocked by any browser
+
 
