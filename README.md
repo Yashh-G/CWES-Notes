@@ -376,3 +376,13 @@ https://www.boxentriq.com/analysis/cipher-identifier # for identifying an encodi
 
 `echo uggcf://jjj.unpxgurobk.rh/ | tr 'A-Za-z' 'N-ZA-Mn-za-m'` # For Decoding
 
+
+### Cross-site scripting (XSS)
+
+In a mobile application, the app may sometimes use a WebView to embed a web application inside an Android or iOS application. By using the following payload:
+
+`<script>alert(window.origin)</script>` 
+
+> we can determine where exactly our payload is being executed, helping us pinpoint the execution context or location. 
+
+
