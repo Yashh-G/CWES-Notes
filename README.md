@@ -389,4 +389,7 @@ In a mobile application, the app may sometimes use a WebView to embed a web appl
 
 **R XSS**
 
-> Reflected XSS vulnerabilities occur when our input reaches the back-end server and gets returned to us without being filtered or sanitized. 
+> Reflected XSS vulnerabilities occur when our input reaches the back-end server and gets returned to us without being filtered or sanitized.
+
+**Attacks**
+1. Stored XSS to web application defacing attack 
