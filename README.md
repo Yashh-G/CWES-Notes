@@ -404,4 +404,9 @@ i. Find an RXSS vulnerability, then inject a login form as a payload, as shown i
 ii. Run the server using this command: sudo php -S tun0_IP:80, then hit enter on the payload that we entered earlier.
 iii. Then observe — we will receive the username and password on the terminal.
 
-
+**Plances where Blind XSS Can be found**
+- Contact Forms
+- Reviews
+- User Details
+- Support Tickets
+- Http User-Agent Header
