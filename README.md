@@ -410,3 +410,4 @@ iii. Then observe — we will receive the username and password on the terminal.
 - User Details
 - Support Tickets
 - Http User-Agent Header
+- Also places where we need to wait for approval (admin will check and approve places)
