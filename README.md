@@ -504,7 +504,59 @@ SELECT * FROM developement # view all the info from the developement table
 
 
 
+*Query Results*
 
+We will learn how to control the results of any SQL query.
+
+*WHERE Clause*
+
+To filter or search for specific data, we can use conditions with the SELECT statement and the WHERE clause to fine-tune the results.
+
+*LIKE Clause*
+
+*SQL Operators*
+
+- Division (/), Multiplication (*), and Modulus (%)
+- Addition (+) and subtraction (-)
+- Comparison (=, >, <, <=, >=, !=, LIKE)
+- NOT (!)
+- AND (&&)
+- OR (||)
+
+*Subverting Query Logic*
+
+*Using comments*
+
+*Union Clause*
+
+Things to keep in mind:
+- Same number of columns on both sides? (both left and right side)
+- Using NULL for filler to avoid type errors? (e.g., `select * from employees UNION SELECT *,1,1,1,1,1 FROM DEPARTMENT;`)
+- Found which columns are visible on screen?
+- Hidden original results (e.g., id=-1)?
+
+---
+
+**All SQL commands (copy them all at once):**
+
+```sql
+mysql> SELECT * FROM logins ORDER BY password;                          # We can sort the results by using ORDER BY
+mysql> SELECT * FROM logins ORDER BY password DESC;                 # We can also sort the results by ASC or DESC
+mysql> SELECT * FROM logins ORDER BY password DESC, id ASC;        # It is also possible to sort by multiple columns to have a secondary sort for duplicate values in one column
+mysql> SELECT * FROM logins LIMIT 2;                               # We can limit the results by rows, like in this case only 2 rows
+mysql> SELECT * FROM logins LIMIT 1, 2;                            # If we wanted to LIMIT results with an offset, we could specify the offset before the LIMIT count
+mysql> SELECT * FROM logins WHERE id > 1;                         # In this case, we want output where id must be greater than 1
+mysql> SELECT * FROM logins WHERE username LIKE 'admin%';         # The query retrieves all records with usernames starting with admin (the % symbol acts as a wildcard)
+mysql> SELECT * FROM logins WHERE username LIKE '___';           # It is used to match zero or more characters. Similarly, the _ symbol is used to match exactly one character. (This query will fetch all usernames that have 3 characters.)
+SELECT * FROM employees WHERE username LIKE 'Bar%';              # Lab answer
+mysql> SELECT * FROM logins WHERE username != 'john';            # Using symbol for NOT operator
+mysql> SELECT * FROM logins WHERE username != 'john' AND id > 1; # Selects users who have their id greater than 1 AND username NOT equal to 'john'
+SELECT * FROM titles WHERE emp_no > '10000' OR title NOT LIKE '%engineer%'; # Answer for the lab
+SELECT * FROM logins WHERE username='' AND password = '';       # If we put ' OR '1'='1 in both fields, we log in as admin (because both conditions are true). AND is executed first in SQLi, then OR.
+tom'#                                                           # Payload for logging in as a different user
+SELECT * FROM logins WHERE (username='') AND password = '098f6bcd4621d373cade4e832627b4f6');
+') OR id = 5 #                                                  # First, close the parenthesis, then use the OR operator, set id=5, and comment out everything.
+select * from employees UNION SELECT *,1,1,1,1,1 FROM DEPARTMENT; # Example using NULL as filler
 
 
 
